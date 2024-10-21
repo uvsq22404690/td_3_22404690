@@ -24,14 +24,16 @@ public class DnsTest {
         initialData.add("www.example.com 192.168.1.1");
         initialData.add("api.example.com 192.168.1.2");
 
-
+        // Écriture des données initiales dans le fichier
         Files.write(testFilePath, initialData, StandardCharsets.UTF_8);
 
+        // Initialisation de l'instance de Dns avec le fichier temporaire
         dns = new Dns(testFilePath.toString());
     }
 
     @Test
     public void testGetItemByNom() {
+        // Test de récupération d'un item par son nom
         DnsItem item = dns.getItemByNom("www.example.com");
         assertNotNull(item);
         assertEquals("192.168.1.1", item.getAdresseIP().toString());
@@ -39,6 +41,7 @@ public class DnsTest {
 
     @Test
     public void testGetItemByAdresse() {
+        // Test de récupération d'un item par son adresse IP
         DnsItem item = dns.getItemByAdresse("192.168.1.2");
         assertNotNull(item);
         assertEquals("api.example.com", item.getNomMachine().getNom());
@@ -46,12 +49,14 @@ public class DnsTest {
 
     @Test
     public void testGetItems() {
+        // Test de récupération de tous les items pour un domaine
         List<DnsItem> items = dns.getItems("example.com");
         assertEquals(2, items.size());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddItemAlreadyExists() {
+        // Test de tentative d'ajout d'un item existant
         NomMachine nomMachine = new NomMachine("www.example.com");
         AdresseIP adresseIP = new AdresseIP("192.168.1.3");
         dns.addItem(nomMachine, adresseIP);
@@ -59,6 +64,7 @@ public class DnsTest {
 
     @Test
     public void testAddItem() {
+        // Test d'ajout d'un nouvel item
         NomMachine nomMachine = new NomMachine("new.example.com");
         AdresseIP adresseIP = new AdresseIP("192.168.1.4");
         dns.addItem(nomMachine, adresseIP);
